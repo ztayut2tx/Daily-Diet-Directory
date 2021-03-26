@@ -1,8 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Banner from "./components/Banner";
-import SideBar from "./components/SideBar";
-import Footer from "./components/Footer";
+import { BrowserRouter as Router,} from "react-router-dom";
+import Banner from "./Components/Banner";
+import SideBar from "./Components/SideBar";
+import Footer from "./Components/Footer";
 
 function App() {
   return (
@@ -11,9 +11,9 @@ function App() {
               <Banner />
               <SideBar />
               <main>
-                  <Switch>
+                  
 
-                  </Switch>
+                  
               </main>
               <Footer />
           </div>
