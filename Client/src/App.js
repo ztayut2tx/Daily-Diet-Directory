@@ -1,22 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router,} from "react-router-dom";
-import Banner from "./Components/Banner";
-import SideBar from "./Components/SideBar";
-import Footer from "./Components/Footer";
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+
+import Home from "./pages/Home";
+import main from "./pages/main";
 
 function App() {
   return (
       <Router>
-          <div>
-              <Banner />
-              <SideBar />
-              <main>
-                  
-
-                  
-              </main>
-              <Footer />
-          </div>
+          <Switch>
+          <Route exact path="/" component={Home} />
+          {/* <Route exact path="/main" component={main}/> */}
+          </Switch>
       </Router>
   )
 }
