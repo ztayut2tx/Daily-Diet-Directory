@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -18,7 +16,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Daily Diet Directory
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -60,6 +58,17 @@ export default function SignIn() {
           Sign in
         </Typography>
         <form className={classes.form} noValidate>
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            autoComplete="name"
+            autoFocus
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -69,7 +78,6 @@ export default function SignIn() {
             label="Email Address"
             name="email"
             autoComplete="email"
-            autoFocus
           />
           <TextField
             variant="outlined"
@@ -80,11 +88,6 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
           />
           <Button
             type="submit"
@@ -92,18 +95,14 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            href="/dashboard"
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
+          <Grid container>            
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link href="/login" variant="body2">
+                {"Already have an account? Login"}
               </Link>
             </Grid>
           </Grid>
