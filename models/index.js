@@ -1,3 +1,5 @@
 module.exports = {
-    Coach: require("./coach")
+    User: require("./user"),
+    Client: require("./client"),
+    Meal: require("./meal")
 };

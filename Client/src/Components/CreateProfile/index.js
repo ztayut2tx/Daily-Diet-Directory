@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -108,32 +108,14 @@ const IOSSlider = withStyles({
 
 function CreateProfile() {
   const classes = useStyles();
+
+  const [client, setClient] = useState({})
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setClient({ ...client, [name]: value })
+  };
   
-  function nameInput(event) {
-    const name = event.target.value;
-    //setClient(name);
-    return name
-  }  
-  function heightInput(event) {
-    const height = event.target.value;
-    //setClient(height);
-    return height
-  }  
-  function weightInput(event) {
-    const weight = event.target.value;
-    //setClient(weight);
-    return weight
-  }  
-  function bodyfatInput(event) {
-    const bodyfat = event.target.value;
-   // setClient(bodyFat);
-   return bodyfat
-  }  
-  function ageInput(event) {
-    const age = event.target.value;
-    //setClient(age);
-    return age
-  }  
   function saveClient(name, height, weight, bodyfat, age) {
     API.saveClient({
       name: name,
@@ -141,7 +123,7 @@ function CreateProfile() {
       weight: weight,
       bodyfat: bodyfat,
       age: age
-    }).then("/dashboard")
+    }).then(window.location("/clientCard"));
   }
   
     return (
@@ -154,7 +136,7 @@ function CreateProfile() {
           <Typography component="h1" variant="h5">
             Create Client Profile
           </Typography>
-          <form onSubmit={saveClient} className={classes.form}>
+          <form className={classes.form}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -165,7 +147,7 @@ function CreateProfile() {
               name="name"
               autoComplete="name"
               autoFocus
-              onChange={nameInput}
+              onChange={handleInputChange}
             />
             <div className={classes.root}>
                 <Typography gutterBottom>Height in Inches</Typography>
@@ -174,7 +156,8 @@ function CreateProfile() {
                 min={0}
                 step={1}
                 max={100}
-                onChange={heightInput} />
+                name="height"
+                onChange={handleInputChange} />
                 <div className={classes.margin} />
                 <Typography gutterBottom>Weight in Pounds</Typography>
                 <div className={classes.margin} />
@@ -182,15 +165,17 @@ function CreateProfile() {
                 min={0}
                 step={1}
                 max={300}
-                onChange={weightInput} />
+                name="weight"
+                onChange={handleInputChange} />
                 <div className={classes.margin} />
-                <Typography gutterBottom>BodyFat %</Typography>
+                <Typography gutterBottom>Bodyfat %</Typography>
                 <div className={classes.margin} />
                 <IOSSlider aria-label="ios slider" defaultValue={0} valueLabelDisplay="on" 
                 min={0}
                 step={.5}
                 max={50} 
-                onChange={bodyfatInput} />
+                name="bodyfat"
+                onChange={handleInputChange} />
                 <div className={classes.margin} />
                 <Typography gutterBottom>Age</Typography>
                 <div className={classes.margin} />
@@ -198,7 +183,8 @@ function CreateProfile() {
                 min={0}
                 step={1}
                 max={100} 
-                onChange={ageInput} />
+                name="age"
+                onChange={handleInputChange} />
             </div>         
             <Button
               type="submit"
@@ -206,7 +192,7 @@ function CreateProfile() {
               variant="contained"
               color="primary"
               className={classes.submit}
-              href="/clientCard"
+              onClick={()=>saveClient(client)}
             >
               Save Client
             </Button>
