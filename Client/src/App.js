@@ -5,17 +5,17 @@ import Login from "./Components/Login"
 import Banner from "./Components/Banner";
 import Welcome from "./Components/Welcome";
 import Footer from "./Components/Footer";
-import ClientCard from "./Components/ClientCard";
-import CreateProfile from "./Components/CreateProfile";
-import UpdateProfile from "./Components/UpdateProfile";
-import CreateMealPlan from "./Components/CreateMealPlan";
+//import ClientCard from "./Components/ClientCard";
+//import CreateProfile from "./Components/CreateProfile";
+//import UpdateProfile from "./Components/UpdateProfile";
+import CreateMeal from "./Components/CreateMeal";
+import IngredientList from "./Components/Foods";
 
 
 function App() {
   return (
       <Router>
           <Switch>
-          <div>
               <Route exact path={["/", "/signUp"]}>
                   <SignUp />
               </Route>
@@ -27,12 +27,12 @@ function App() {
                 <Welcome />
                 <Footer />
               </Route>
-              <Route exact path={["/clientCard"]}>
+              {/*<Route exact path={["/clientCard"]}>
                 <Banner />
                 <ClientCard />
                 <Footer />
               </Route> 
-              <Route  exact path="/createProfile">
+               <Route  exact path="/createProfile">
                 <Banner />
                 <CreateProfile />
                 <Footer />
@@ -41,13 +41,17 @@ function App() {
                 <Banner />
                 <UpdateProfile />
                 <Footer />
-              </Route>
-              <Route exact path="/createMealPlan">
+              </Route> */}
+              <Route exact path="/createMeal">
                 <Banner />
-                <CreateMealPlan />
+                <CreateMeal />
                 <Footer />
               </Route>
-          </div>
+              <Route exact path="/ingredientList">
+                <Banner />
+                <IngredientList />
+                <Footer />
+              </Route>
           </Switch>
       </Router>
   )

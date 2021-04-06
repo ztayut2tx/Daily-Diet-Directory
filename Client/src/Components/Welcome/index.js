@@ -32,7 +32,7 @@ export default function Welcome() {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="s">
+    <Container component="main" maxWidth="lg">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -45,31 +45,7 @@ export default function Welcome() {
           This app alows you to create daily meal plans for your clients.
         </Typography>
           
-          <Grid container spacing={3}>            
-            <Grid item xs={12} sm={4}>
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    href="/createProfile"
-                >
-                    New Client Profile
-                </Button>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    href="/clientCard"
-                >
-                    View Clients
-                </Button>
-            </Grid>
+          <Grid container spacing={3}>  
             <Grid item xs={12} sm={4}>
                 <Button
                     type="submit"
@@ -81,7 +57,32 @@ export default function Welcome() {
                 >
                     Ingredient List
                 </Button>
+            </Grid>          
+            <Grid item xs={12} sm={4}>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    href="/createMeal"
+                >
+                    Create New Meal
+                </Button>
             </Grid>
+            <Grid item xs={12} sm={4}>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    href="/viewMeals"
+                >
+                    View Meals
+                </Button>
+            </Grid>
+            
           </Grid>
       </div>
     </Container>

@@ -1,9 +1,39 @@
 import axios from "axios";
 export default {
-    saveClient: function(clientData) {
-        return axios.post(".api/clients", clientData)
+    //Coach
+    getUser: function(id) {
+        return axios.get("/api/coach/" + id);
     },
-    updateClient: function(id) {
-        return axios.put("api/client/" + id)
+    saveUserh: function(coachData) {
+        return axios.post("/api/coach", coachData);
     },
+    //Client
+    // getClients: function() {
+    //     return axios.get("/api/client");
+    // },
+    // getClient: function(id) {
+    //     return axios.get("/api/client/" + id);
+    // },
+    // saveClient: function(clientData) {
+    //     return axios.post("/api/client", clientData);
+    // },
+    // updateClient: function(id) {
+    //     return axios.put("/api/client/" + id);
+    // },
+    // deleteClient: function(id) {
+    //     return axios.delete("/api/post/" + id);
+    // },
+    //Meals
+    getMeals: function() {
+        return axios.get("/api/meal");
+    },
+    getMeal: function(id) {
+        return axios.get("/api/meal/" + id);
+    },
+    saveMeal: function(mealData) {
+        return axios.post("/api/meal", mealData);
+    },
+    updateMeal: function(id) {
+        return axios.get("/api/meal/" + id);
+    }
 }
