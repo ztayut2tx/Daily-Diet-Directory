@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import API from '../../Utils/API';
 
 function Copyright() {
   return (
@@ -44,8 +45,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignUp() {
   const classes = useStyles();
+  const [name, setName] = useState([]);
+  const [email, setEmail] = useState([])
+  const [password, setPassword] = useState([])
+  
+  function handleSubmit(event) {
+    event.preventDefault();
+    API.saveUser({
+      name: name,
+      email: email,
+      password: password
+    }).then(window.location("/dashboard"))
+  };
+  function handleEmail(event) {
+    setEmail(event.target.value)
+  };
+  function handlePassword(event) {
+    setPassword(event.target.value)
+  };
+  function handleName(event) {
+    setName(event.target.value)
+  }
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,8 +89,8 @@ export default function SignIn() {
             id="name"
             label="Name"
             name="name"
-            autoComplete="name"
             autoFocus
+            onChange={handleName}
           />
           <TextField
             variant="outlined"
@@ -77,7 +100,7 @@ export default function SignIn() {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
+            onChange={handleEmail}
           />
           <TextField
             variant="outlined"
@@ -88,12 +111,14 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
+            onChange={handlePassword}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
+            onClilck={handleSubmit}
             className={classes.submit}
             href="/dashboard"
           >

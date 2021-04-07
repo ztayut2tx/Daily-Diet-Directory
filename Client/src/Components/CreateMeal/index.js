@@ -70,9 +70,9 @@ export default function CreateMealPlan() {
    loadMeal()
  }, []);
 
- function loadMeal() {
+ function loadMeal(id) {
    console.log("loadMealFired")
-   API.getMeal()
+   API.getMeal(id)
    .then(res =>
     setMeal(res.data)
     )
@@ -81,41 +81,38 @@ export default function CreateMealPlan() {
 
  function handleTitleChange(event) {
    console.log("handleTitleChangeFired")
-   const title = event.target.value;
-   setTitle(title)
-   .then(saveMeal())
+   setTitle(event.target.value)
  };
 
- function saveMeal() {
-   console.log("saveMealFired")
-   API.saveMeal({
-    title: title
-   })
- };
+//  function saveMeal() {
+//    console.log("saveMealFired")
+//    API.saveMeal({
+//     title: title
+//    })
+//  };
 
  function handleFoodSelection(event) {
    console.log("handleFoodSelectionFired")
   const ingredient = event.target.value;
-  const dataObject = food.find(obj => obj.name === ingredient)
-  setDataObject(dataObject)
+  setDataObject(food.find(obj => obj.name === ingredient))
  };
 
  function handleAmountSelection(event) {
    console.log("handleAmountSelectionFired")
-   const amount = event.target.value;
-   setAmount(amount)
+   setAmount(event.target.value)
  };
 
  function handleNotes(event) {
    console.log("handleNotesFired")
-   const note = event.target.value;
-   setNote(note)
-   .then(updateMeal())
+   setNote(event.target.value)
  };
 
- function updateMeal() {
-   console.log("updateMealFired")
-   API.updateMeal({
+ function saveMeal(evt) {
+   
+   evt.preventDefault();
+   const mealToSave = 
+   {
+    title: title,
     foods: [{
       food: dataObject.name,
       amount: amount,
@@ -125,7 +122,11 @@ export default function CreateMealPlan() {
       fat: dataObject.fat/100 * amount
       }],
       notes: note
-   }).then(RenderMeal())
+   }
+   console.log("saveMealFired")
+   API.saveMeal(
+    mealToSave
+   )
 };
 
 function RenderMeal(){
@@ -184,33 +185,33 @@ function RenderMeal(){
         <Typography className={classes.title} >
             Create Meal 
         </Typography>
+        <div className={classes.form}>
         <form>
-        <TextField id="standard-basic" label="Title" name="title" />
-        <Button
+        <TextField id="standard-basic" label="Title" name="title" onChange={handleTitleChange}/>
+        {/* <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleTitleChange}
+                onSubmit={handleTitleChange}
                 className={classes.submit}
               >
                 Step 1: Set Meal Title
         </Button>
-        </form>
-        <div className={classes.form}>
+        </form> */}
           <Typography>
             Add Ingredients to Meal
           </Typography>
-          <form >
+          {/* <form > */}
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
-              <FoodSelector  name="ingredient" onSubmit={handleFoodSelection} />
+              <FoodSelector  name="ingredient" onSelect={handleFoodSelection} />
               </Grid>
               <Grid item xs={12} sm={6}>
-              <TextField id="standard-basic" label="Weight In Grams" name="amount" onSubmit={handleAmountSelection} />
+              <TextField id="standard-basic" label="Weight In Grams" name="amount" onChange={handleAmountSelection} />
               </Grid>
             </Grid>
-            <Button
+            {/* <Button
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -219,9 +220,9 @@ function RenderMeal(){
                 className={classes.submit}
               >
                 Step 2: Add Ingredient
-            </Button>
+            </Button> 
           </form>
-          <form>
+          <form>*/}
             <TextField
             id="outlined-multiline-static"
             label="Add Notes for Meal"
@@ -229,16 +230,17 @@ function RenderMeal(){
             multiline
             rows={4}
             variant="outlined"
+            onChange={handleNotes}
             />
             <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleNotes}
                 className={classes.submit}
+                onClick={saveMeal}
               >
-                Step 3: Add Notes
+                Create Meal 
             </Button>
 
           </form>
