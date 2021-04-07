@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from "axios"
 export default {
     //Coach
     getUser: function(id) {
         return axios.get("/api/coach/" + id);
     },
-    saveUserh: function(coachData) {
+    saveUser: function(coachData) {
         return axios.post("/api/coach", coachData);
     },
     //Client
@@ -30,10 +30,20 @@ export default {
     getMeal: function(id) {
         return axios.get("/api/meal/" + id);
     },
+    findMeal: function(title) {
+        return axios.get("/api/meal/find", {
+            params: {
+                title: title
+            }
+        })
+    },
     saveMeal: function(mealData) {
+        console.log(mealData)
         return axios.post("/api/meal", mealData);
+        
     },
     updateMeal: function(id) {
         return axios.get("/api/meal/" + id);
     }
+
 }
