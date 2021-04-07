@@ -7,8 +7,9 @@ const newMeal = new Schema({
         food: {type: String},
         amount: {type: Number},
         calories: {type: Number},
-        fat: {type: Number},
-        protein: {type: Number}
+        protein: {type: Number},
+        carbs: {type: Number},
+        fat: {type: Number}
     }],
     notes: {type: String}
 
