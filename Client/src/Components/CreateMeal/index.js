@@ -17,7 +17,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import FoodSelector from '../FoodSelector/index'
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     margin: "5%",
+  },
+  center: {
+    justifyContent: "center"
+  },
+  width: {
+    width: "100%"
   },
   title: {
     textAlign: 'center',
@@ -55,14 +63,31 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
 }));
 
 export default function CreateMealPlan() {
  const classes = useStyles();
  const food = Food;
  const [title, setTitle] = useState({});
- const [amount, setAmount] = useState({});
- const [dataObject, setDataObject] = useState({});
+ const [amount, setAmount] = useState([]);
+ const [amountObject, setAmountObject] = useState([]);
+ const [ingredient, setIngredient] = useState({});
+ const [dataObject, setDataObject] = useState([]);
  const [note, setNote] = useState({});
  const [meal, setMeal] = useState({});
 
@@ -91,15 +116,47 @@ export default function CreateMealPlan() {
 //    })
 //  };
 
- function handleFoodSelection(event) {
-   console.log("handleFoodSelectionFired")
-  const ingredient = event.target.value;
-  setDataObject(food.find(obj => obj.name === ingredient))
- };
+const names = Food.map(a => a.name);
+
+function handleFoodSelector (event) {
+  event.preventDefault()
+  const { options } = event.target;
+  const value = [];
+  for (let i = 0, l = options.length; i < l; i += 1) {
+    if (options[i].selected) {
+      value.push(options[i].value);
+      setIngredient(value[0]);
+    }
+  }
+}
+      
+function handleDataObject(event) {
+  event.preventDefault()
+    console.log(ingredient);
+    let potato = {};
+    potato = food.find(obj => obj.name === ingredient);
+    let newArray = [...dataObject];
+    newArray.push(potato);
+    setDataObject(newArray);
+}
 
  function handleAmountSelection(event) {
    console.log("handleAmountSelectionFired")
    setAmount(event.target.value)
+ };
+ function handleAmountObject(event) {
+   event.preventDefault()
+   console.log(amount);
+   let stuff = {};
+   stuff = amount;
+   let newStuff = [...amountObject];
+   newStuff.push(stuff);
+   setAmountObject(newStuff);
+ };
+ function handleAddButton(event) {
+   event.preventDefault();
+   handleDataObject(event);
+   handleAmountObject(event);
  };
 
  function handleNotes(event) {
@@ -110,19 +167,24 @@ export default function CreateMealPlan() {
  function saveMeal(evt) {
    
    evt.preventDefault();
-   const mealToSave = 
-   {
-    title: title,
-    foods: [{
-      food: dataObject.name,
-      amount: amount,
-      calories: dataObject.calories/100 * amount,
-      protein: dataObject.protein/100 * amount,
-      carbs: dataObject.carbs/100 * amount,
-      fat: dataObject.fat/100 * amount
-      }],
-      notes: note
-   }
+   let mealToSave = {};
+   let length = dataObject.length
+   for (let i = 0; i<length; i++) {
+     mealToSave ={
+       title: title,
+       foods: [
+           {
+           food: dataObject[i].name,
+           amount: amountObject[i],
+           calories: dataObject[i].calories/100 * amountObject[i],
+           protein: dataObject[i].protein/100 * amountObject[i],
+           carbs: dataObject[i].carbs/100 * amountObject[i],
+           fat: dataObject[i].fat/100 * amountObject[i]
+           }
+         ],
+       notes: note
+     }
+  }
    console.log("saveMealFired")
    API.saveMeal(
     mealToSave
@@ -186,8 +248,8 @@ function RenderMeal(){
             Create Meal 
         </Typography>
         <div className={classes.form}>
-        <form>
-        <TextField id="standard-basic" label="Title" name="title" onChange={handleTitleChange}/>
+        <form className={classes.form}>
+        <TextField id="standard-basic" label="Title" name="title" className={classes.center} onChange={handleTitleChange}/>
         {/* <Button
                 type="submit"
                 fullWidth
@@ -197,32 +259,53 @@ function RenderMeal(){
                 className={classes.submit}
               >
                 Step 1: Set Meal Title
-        </Button>
-        </form> */}
+        </Button> */}
+        </form>
           <Typography>
             Add Ingredients to Meal
           </Typography>
-          {/* <form > */}
+           <form className={classes.form}> 
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
-              <FoodSelector  name="ingredient" onSelect={handleFoodSelection} />
+              <FormControl className={classes.formControl}>
+                <InputLabel shrink htmlFor="select-multiple-native">
+                  Select Ingredient
+                </InputLabel>
+                <Select
+                  multiple
+                  native
+                  value={ingredient}
+                  onChange={handleFoodSelector}
+                  inputProps={{
+                    id: 'select-multiple-native',
+                  }}
+                >
+                  {names.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-              <TextField id="standard-basic" label="Weight In Grams" name="amount" onChange={handleAmountSelection} />
+              <TextField id="standard-basic" label="Weight In Grams" name="amount" type="number" onChange={handleAmountSelection}>
+                <input type="number"/>
+              </TextField>
               </Grid>
             </Grid>
-            {/* <Button
+             <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={updateMeal}
+                onClick={handleAddButton}
                 className={classes.submit}
               >
-                Step 2: Add Ingredient
+                Add Ingredient
             </Button> 
-          </form>
-          <form>*/}
+         </form>
+          <form className={classes.form}>
             <TextField
             id="outlined-multiline-static"
             label="Add Notes for Meal"
@@ -230,6 +313,7 @@ function RenderMeal(){
             multiline
             rows={4}
             variant="outlined"
+            className={classes.width}
             onChange={handleNotes}
             />
             <Button
