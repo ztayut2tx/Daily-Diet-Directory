@@ -10,7 +10,7 @@ import Footer from "./Components/Footer";
 //import UpdateProfile from "./Components/UpdateProfile";
 import CreateMeal from "./Components/CreateMeal";
 import IngredientList from "./Components/Foods";
-
+import MealCard from "./Components/MealCard";
 
 function App() {
   return (
@@ -42,14 +42,19 @@ function App() {
                 <UpdateProfile />
                 <Footer />
               </Route> */}
+              <Route exact path="/ingredientList">
+                <Banner />
+                <IngredientList />
+                <Footer />
+              </Route>
               <Route exact path="/createMeal">
                 <Banner />
                 <CreateMeal />
                 <Footer />
               </Route>
-              <Route exact path="/ingredientList">
+              <Route exact path="/viewMeals">
                 <Banner />
-                <IngredientList />
+                <MealCard />
                 <Footer />
               </Route>
           </Switch>

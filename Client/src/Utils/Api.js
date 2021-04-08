@@ -20,9 +20,6 @@ export default {
     // updateClient: function(id) {
     //     return axios.put("/api/client/" + id);
     // },
-    // deleteClient: function(id) {
-    //     return axios.delete("/api/post/" + id);
-    // },
     //Meals
     getMeals: function() {
         return axios.get("/api/meal");
@@ -30,20 +27,15 @@ export default {
     getMeal: function(id) {
         return axios.get("/api/meal/" + id);
     },
-    findMeal: function(title) {
-        return axios.get("/api/meal/find", {
-            params: {
-                title: title
-            }
-        })
-    },
     saveMeal: function(mealData) {
         console.log(mealData)
         return axios.post("/api/meal", mealData);
-        
     },
     updateMeal: function(id) {
         return axios.get("/api/meal/" + id);
-    }
+    },
+    deleteMeal: function(id) {
+        return axios.delete("/api/meal/" + id);
+    },
 
 }
