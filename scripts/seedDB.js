@@ -28,7 +28,7 @@ db.User
 const newMeal = [{
     title: "Test Meal",
     foods: [{
-        food: "Chicken Breast",
+        name: "Chicken Breast",
         amount: 150,
         calories: 1234,
         protein: 123,
@@ -36,7 +36,7 @@ const newMeal = [{
         fat: 12
     },
     {
-        food: "Rice",
+        name: "Rice",
         amount: 200,
         calories: 2345,
         protein: 0,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -9,14 +9,14 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import API from '../../Utils/API';
 import Food from '../../food.js';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+// import List from '@material-ui/core/List';
+// import ListItem from '@material-ui/core/ListItem';
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableContainer from '@material-ui/core/TableContainer';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableRow from '@material-ui/core/TableRow';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -89,32 +89,39 @@ export default function CreateMealPlan() {
  const [ingredient, setIngredient] = useState({});
  const [dataObject, setDataObject] = useState([]);
  const [note, setNote] = useState({});
- const [meal, setMeal] = useState({});
+ //const [meal, setMeal] = useState({});
 
- useEffect(() => {
-   loadMeal()
- }, []);
 
- function loadMeal(id) {
-   console.log("loadMealFired")
-   API.getMeal(id)
-   .then(res =>
-    setMeal(res.data)
-    )
-    .catch(err => console.log(err));
- }
+// function MealToRender (){
+//   let foodsToSave = [];
+//   let foodStuff = {};
+//   let length = dataObject.length
+//   for (let i = 0; i<length; i++) {
+//     foodStuff =
+//           {
+//           name: dataObject[i].name,
+//           amount: amountObject[i],
+//           calories: dataObject[i].calories/100 * amountObject[i],
+//           protein: dataObject[i].protein/100 * amountObject[i],
+//           carbs: dataObject[i].carbs/100 * amountObject[i],
+//           fat: dataObject[i].fat/100 * amountObject[i]
+//           }
+//         foodsToSave.push(foodStuff)
+//    }
+//      setMeal({
+//        title: title,
+//        foods: foodsToSave,
+//        notes: note
+//      })
+//   }
+//     window.setInterval(MealToRender, 10000)
+  
+
 
  function handleTitleChange(event) {
    console.log("handleTitleChangeFired")
    setTitle(event.target.value)
  };
-
-//  function saveMeal() {
-//    console.log("saveMealFired")
-//    API.saveMeal({
-//     title: title
-//    })
-//  };
 
 const names = Food.map(a => a.name);
 
@@ -168,22 +175,26 @@ function handleDataObject(event) {
    
    evt.preventDefault();
    let mealToSave = {};
+   let foodsToSave = [];
+   let foodStuff = {};
    let length = dataObject.length
    for (let i = 0; i<length; i++) {
-     mealToSave ={
-       title: title,
-       foods: [
+     foodStuff =
            {
-           food: dataObject[i].name,
+           name: dataObject[i].name,
            amount: amountObject[i],
            calories: dataObject[i].calories/100 * amountObject[i],
            protein: dataObject[i].protein/100 * amountObject[i],
            carbs: dataObject[i].carbs/100 * amountObject[i],
            fat: dataObject[i].fat/100 * amountObject[i]
            }
-         ],
-       notes: note
-     }
+         foodsToSave.push(foodStuff)
+    }
+
+  mealToSave = {
+    title: title,
+    foods: foodsToSave,
+    notes: note
   }
    console.log("saveMealFired")
    API.saveMeal(
@@ -191,55 +202,67 @@ function handleDataObject(event) {
    )
 };
 
-function RenderMeal(){
-  console.log("RenderMealFired")
-    if (meal === true){
-        return (
-          <div className={classes.content}>
-          <Typography className={classes.heading}>
-          {meal.title}
-          </Typography>
-          <List >
-          <ListItem>
-              <TableContainer>
-              <Table className={classes.table} size="small" aria-label="a dense table">
-                  <TableHead>
-                  <TableRow>
-                      <TableCell>Ingredient</TableCell>
-                      <TableCell align="right">Amount&nbsp;(g)</TableCell>
-                      <TableCell align="right">Calories</TableCell>
-                      <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                      <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                      <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                  </TableRow>
-                  </TableHead>
-                  <TableBody>
-                  {meal.foods.map(foods => (
-                      <TableRow>
-                      <TableCell component="th" scope="row">{foods.name}</TableCell>
-                      <TableCell align="right">{foods.amount}</TableCell>
-                      <TableCell align="right">{foods.calories}</TableCell>
-                      <TableCell align="right">{foods.protein}</TableCell>
-                      <TableCell align="right">{foods.carbs}</TableCell>
-                      <TableCell align="right">{foods.fat}</TableCell>
-                      </TableRow>
-                  ))}
-                  </TableBody>
-              </Table>
-              </TableContainer>
-              <Typography>
-                {meal.notes}
-              </Typography>
-          </ListItem>
-          </List>
-      </div>
-        )}
-      else {
-          return (
-              <h2>No results to display.</h2>
-          )
-      }   
-};
+// function RenderMeal(){
+//   console.log("RenderMealFired")
+ 
+//     if (meal.title == true){
+//         return (
+//           <div className={classes.content}>
+//           <Typography className={classes.heading}>
+//           {meal.title}
+//           </Typography>
+//           </div>
+//         )
+//       }
+//     if(meal.foods == true)
+//         return (
+//           <div>
+//           <List >
+//           <ListItem>
+//               <TableContainer>
+//               <Table className={classes.table} size="small" aria-label="a dense table">
+//                   <TableHead>
+//                   <TableRow>
+//                       <TableCell>Ingredient</TableCell>
+//                       <TableCell align="right">Amount&nbsp;(g)</TableCell>
+//                       <TableCell align="right">Calories</TableCell>
+//                       <TableCell align="right">Protein&nbsp;(g)</TableCell>
+//                       <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+//                       <TableCell align="right">Fat&nbsp;(g)</TableCell>
+//                   </TableRow>
+//                   </TableHead>
+//                   <TableBody>
+//                   {meal.foods.map(foods => (
+//                       <TableRow>
+//                       <TableCell component="th" scope="row">{foods.name}</TableCell>
+//                       <TableCell align="right">{foods.amount}</TableCell>
+//                       <TableCell align="right">{foods.calories}</TableCell>
+//                       <TableCell align="right">{foods.protein}</TableCell>
+//                       <TableCell align="right">{foods.carbs}</TableCell>
+//                       <TableCell align="right">{foods.fat}</TableCell>
+//                       </TableRow>
+//                   ))}
+//                   </TableBody>
+//               </Table>
+//               </TableContainer>
+//           </ListItem>
+//           </List>
+//           </div>
+//         )
+//       if (meal.notes == true)
+//         return(
+//             <Typography>
+//               {meal.notes}
+//             </Typography>
+//         )
+//       else {
+//         return (
+//             <Typography className={classes.heading}>
+//              No Results to Display
+//             </Typography>
+//         )
+//       }   
+// };
 
   return (
     <Container className={classes.root}>
@@ -250,16 +273,6 @@ function RenderMeal(){
         <div className={classes.form}>
         <form className={classes.form}>
         <TextField id="standard-basic" label="Title" name="title" className={classes.center} onChange={handleTitleChange}/>
-        {/* <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                onSubmit={handleTitleChange}
-                className={classes.submit}
-              >
-                Step 1: Set Meal Title
-        </Button> */}
         </form>
           <Typography>
             Add Ingredients to Meal
@@ -323,13 +336,13 @@ function RenderMeal(){
                 color="primary"
                 className={classes.submit}
                 onClick={saveMeal}
+                href="/viewMeals"
               >
                 Create Meal 
             </Button>
-
           </form>
         </div>
-      <RenderMeal />
+      {/* <RenderMeal /> */}
       </Paper>
     </Container>
   );         
