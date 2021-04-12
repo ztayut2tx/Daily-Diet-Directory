@@ -1,6 +1,6 @@
 const Food =[
         {
-            name:"Canola Oil",
+            name:"Avocado Oil",
             type:"Oil",
             calories:884,
             protein:0,
@@ -8,7 +8,15 @@ const Food =[
             fat:100
         },
         {
-            name:"Avocado Oil",
+            name:"Butter",
+            type:"Oil",
+            calories:717,
+            protein:0,
+            carbs:0,
+            fat:81
+        },
+        {
+            name:"Canola Oil",
             type:"Oil",
             calories:884,
             protein:0,
@@ -32,14 +40,6 @@ const Food =[
             fat:100
         },
         {
-            name:"Walnut Oil",
-            type:"Oil",
-            calories:884,
-            protein:0,
-            carbs:0,
-            fat:100
-        },
-        {
             name:"Olive Oil",
             type:"Oil",
             calories:884,
@@ -48,12 +48,12 @@ const Food =[
             fat:100
         },
         {
-            name:"Butter",
+            name:"Walnut Oil",
             type:"Oil",
-            calories:717,
+            calories:884,
             protein:0,
             carbs:0,
-            fat:81
+            fat:100
         },
         {
             name:"Apple",

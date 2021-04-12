@@ -42,11 +42,11 @@ export default function Welcome() {
           Welcome to the Daily Diet Directory
         </Typography>
         <Typography component="h3">
-          This app alows you to create daily meal plans for your clients.
+          This app allows you to create your own nutritional database filled with individual ingredients and saved meals.
         </Typography>
           
           <Grid container spacing={3}>  
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={3}>
                 <Button
                     type="submit"
                     fullWidth
@@ -57,8 +57,20 @@ export default function Welcome() {
                 >
                     Ingredient List
                 </Button>
-            </Grid>          
-            <Grid item xs={12} sm={4}>
+            </Grid>     
+            <Grid item xs={12} sm={3}>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    href="/createIngredient"
+                >
+                    Create Custom Ingredient
+                </Button>
+            </Grid>     
+            <Grid item xs={12} sm={3}>
                 <Button
                     type="submit"
                     fullWidth
@@ -70,7 +82,7 @@ export default function Welcome() {
                     Create New Meal
                 </Button>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={3}>
                 <Button
                     type="submit"
                     fullWidth

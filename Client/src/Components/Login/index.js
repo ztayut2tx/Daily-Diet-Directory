@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -44,9 +45,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+function Login () {
   const classes = useStyles();
+  const [name, setName] = useState({});
+  const [password, setPassword] = useState({});
 
+  function handleName(event) {
+    setName(event.target.value)
+  }
+
+  function handlePassword(event) {
+    setPassword(event.target.value)
+  }
+  
+  function handleSubmit(event) {
+    event.preventDefault()
+    console.log('handleSubmit')
+    
+    axios
+    .post('/api/user/login', {
+      name: name,
+      password: password
+    },
+    )
+    .then(response => {
+      console.log('you made it this far')
+      console.log('login response: ')
+      console.log(response)
+      if (response.status === 200) {
+        // update App.js state
+        // this.props.updateUser({
+        //   loggedIn: true,
+        //   name: response.data.name
+        // })
+        // update the state to redirect to home
+        window.location.href="/viewMeals"
+    
+      }
+    }).catch(error => {
+      console.log('login error: ')
+      console.log(error);
+    })
+  }
+  
+  
+ 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -63,11 +106,11 @@ export default function Login() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="name"
+            label="User Name"
+            name="name"
             autoFocus
+            onChange={handleName}
           />
           <TextField
             variant="outlined"
@@ -78,6 +121,7 @@ export default function Login() {
             label="Password"
             type="password"
             id="password"
+            onChange={handlePassword}
           />
           <Button
             type="submit"
@@ -85,7 +129,7 @@ export default function Login() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            href="/dashboard"
+            onClick={handleSubmit}
           >
         Login
           </Button>
@@ -104,3 +148,6 @@ export default function Login() {
     </Container>
   );
 }
+
+
+export default Login;
