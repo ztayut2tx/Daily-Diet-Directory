@@ -7,19 +7,6 @@ export default {
     saveUser: function(coachData) {
         return axios.post("/api/coach", coachData);
     },
-    //Client
-    // getClients: function() {
-    //     return axios.get("/api/client");
-    // },
-    // getClient: function(id) {
-    //     return axios.get("/api/client/" + id);
-    // },
-    // saveClient: function(clientData) {
-    //     return axios.post("/api/client", clientData);
-    // },
-    // updateClient: function(id) {
-    //     return axios.put("/api/client/" + id);
-    // },
     //Meals
     getMeals: function() {
         return axios.get("/api/meal");
@@ -37,5 +24,23 @@ export default {
     deleteMeal: function(id) {
         return axios.delete("/api/meal/" + id);
     },
+    //Custom Ingredients
+    getFoods: function() {
+        return axios.get("/api/food");
+    },
+    getFood: function(id) {
+        return axios.get("/api/food/" + id);
+    },
+    saveFood: function(foodData) {
+        console.log(foodData)
+        return axios.post("/api/food", foodData);
+    },
+    updateFood: function(id) {
+        return axios.get("/api/food/" + id);
+    },
+    deleteFood: function(id) {
+        return axios.delete("/api/food/" + id);
+    },
+
 
 }

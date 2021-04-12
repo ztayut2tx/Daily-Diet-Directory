@@ -58,3 +58,24 @@ const newMeal = [{
             console.error(err);
             process.exit(1);
         });
+
+const newFood = [{
+    name: "Love",
+    amount: 100,
+    calories: 400,
+    protein: 60,
+    carbs: 40,
+    fat: 0
+}]
+           
+    db.Food
+        .remove({})
+        .then(() => db.Food.collection.insertMany(newFood))
+        .then(data => {
+            console.log(data.result.n  + "data inserted!");
+            process.exit(0);
+        })
+        .catch(err => {
+            console.error(err);
+            process.exit(1);
+        });

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import 'date-fns';
+import React, { useState, useEffect } from 'react';
+import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -7,17 +7,12 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import API from '../../Utils/API';
 import Food from '../../food.js';
-// import List from '@material-ui/core/List';
-// import ListItem from '@material-ui/core/ListItem';
-// import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableContainer from '@material-ui/core/TableContainer';
-// import TableHead from '@material-ui/core/TableHead';
-// import TableRow from '@material-ui/core/TableRow';
+import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -28,17 +23,24 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(2),
       padding: theme.spacing(1),
-      width: theme.spacing('auto'),
-      height: theme.spacing('auto'),
+      // width: theme.spacing('auto'),
+      // height: theme.spacing('auto'),
     },
     justifyContent: "center",
-    padding: theme.spacing(3, 0, 8),
+    padding: theme.spacing(8, 0, 8),
+    alignItems: "center",
   },
   content: {
-    margin: "5%",
+    marginRight: "5%",
+    marginLeft: "20%",
+    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
   },
   center: {
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: 'center',
   },
   width: {
     width: "100%"
@@ -55,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: 'groove',
     borderWidth: '2px',
     borderRadius: '5px',
-    padding: '5px'
+    padding: '5px',
+    margin: '10px',
   },
   submit: {
     margin: theme.spacing(2, 0, 0),
@@ -65,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 150,
     maxWidth: 300,
   },
   chips: {
@@ -78,6 +81,10 @@ const useStyles = makeStyles((theme) => ({
   noLabel: {
     marginTop: theme.spacing(3),
   },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
 export default function CreateMealPlan() {
@@ -89,66 +96,57 @@ export default function CreateMealPlan() {
  const [ingredient, setIngredient] = useState({});
  const [dataObject, setDataObject] = useState([]);
  const [note, setNote] = useState({});
- //const [meal, setMeal] = useState({});
+ const [custom, setCustom] = useState([]);
 
+ useEffect(() => {
+  loadCustom()
+}, [])
 
-// function MealToRender (){
-//   let foodsToSave = [];
-//   let foodStuff = {};
-//   let length = dataObject.length
-//   for (let i = 0; i<length; i++) {
-//     foodStuff =
-//           {
-//           name: dataObject[i].name,
-//           amount: amountObject[i],
-//           calories: dataObject[i].calories/100 * amountObject[i],
-//           protein: dataObject[i].protein/100 * amountObject[i],
-//           carbs: dataObject[i].carbs/100 * amountObject[i],
-//           fat: dataObject[i].fat/100 * amountObject[i]
-//           }
-//         foodsToSave.push(foodStuff)
-//    }
-//      setMeal({
-//        title: title,
-//        foods: foodsToSave,
-//        notes: note
-//      })
-//   }
-//     window.setInterval(MealToRender, 10000)
+function loadCustom() {
+  API.getFoods()
+  .then(res =>
+      setCustom(res.data)
+      )
+      .catch(err => console.log(err));
+};
+
+ const ITEM_HEIGHT = 48;
+ const ITEM_PADDING_TOP = 8;
+ const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+ };
   
-
-
  function handleTitleChange(event) {
-   console.log("handleTitleChangeFired")
    setTitle(event.target.value)
  };
 
 const names = Food.map(a => a.name);
 
-function handleFoodSelector (event) {
-  event.preventDefault()
-  const { options } = event.target;
-  const value = [];
-  for (let i = 0, l = options.length; i < l; i += 1) {
-    if (options[i].selected) {
-      value.push(options[i].value);
-      setIngredient(value[0]);
-    }
-  }
-}
+const handleChange = (event) => {
+  setIngredient(event.target.value);
+};
       
 function handleDataObject(event) {
   event.preventDefault()
     console.log(ingredient);
     let potato = {};
-    potato = food.find(obj => obj.name === ingredient);
+    if (food.find(obj => obj.name === ingredient)){
+      potato = food.find(obj => obj.name === ingredient)
+    }
+    else {
+      potato = custom.find(obj => obj.name === ingredient)
+    }
     let newArray = [...dataObject];
     newArray.push(potato);
     setDataObject(newArray);
 }
 
  function handleAmountSelection(event) {
-   console.log("handleAmountSelectionFired")
    setAmount(event.target.value)
  };
  function handleAmountObject(event) {
@@ -167,7 +165,6 @@ function handleDataObject(event) {
  };
 
  function handleNotes(event) {
-   console.log("handleNotesFired")
    setNote(event.target.value)
  };
 
@@ -196,110 +193,82 @@ function handleDataObject(event) {
     foods: foodsToSave,
     notes: note
   }
-   console.log("saveMealFired")
    API.saveMeal(
     mealToSave
-   )
+   ).res(window.location.href="/viewMeals")
 };
 
-// function RenderMeal(){
-//   console.log("RenderMealFired")
- 
-//     if (meal.title == true){
-//         return (
-//           <div className={classes.content}>
-//           <Typography className={classes.heading}>
-//           {meal.title}
-//           </Typography>
-//           </div>
-//         )
-//       }
-//     if(meal.foods == true)
-//         return (
-//           <div>
-//           <List >
-//           <ListItem>
-//               <TableContainer>
-//               <Table className={classes.table} size="small" aria-label="a dense table">
-//                   <TableHead>
-//                   <TableRow>
-//                       <TableCell>Ingredient</TableCell>
-//                       <TableCell align="right">Amount&nbsp;(g)</TableCell>
-//                       <TableCell align="right">Calories</TableCell>
-//                       <TableCell align="right">Protein&nbsp;(g)</TableCell>
-//                       <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-//                       <TableCell align="right">Fat&nbsp;(g)</TableCell>
-//                   </TableRow>
-//                   </TableHead>
-//                   <TableBody>
-//                   {meal.foods.map(foods => (
-//                       <TableRow>
-//                       <TableCell component="th" scope="row">{foods.name}</TableCell>
-//                       <TableCell align="right">{foods.amount}</TableCell>
-//                       <TableCell align="right">{foods.calories}</TableCell>
-//                       <TableCell align="right">{foods.protein}</TableCell>
-//                       <TableCell align="right">{foods.carbs}</TableCell>
-//                       <TableCell align="right">{foods.fat}</TableCell>
-//                       </TableRow>
-//                   ))}
-//                   </TableBody>
-//               </Table>
-//               </TableContainer>
-//           </ListItem>
-//           </List>
-//           </div>
-//         )
-//       if (meal.notes == true)
-//         return(
-//             <Typography>
-//               {meal.notes}
-//             </Typography>
-//         )
-//       else {
-//         return (
-//             <Typography className={classes.heading}>
-//              No Results to Display
-//             </Typography>
-//         )
-//       }   
-// };
+function CustomSelector (){
+        if (custom.length > 0){
+          const names2 = custom.map(a => a.name);
+          return(
+            <FormControl className={classes.formControl}>
+                <InputLabel id="demo-mutiple-name-label">Select Custom Ingredient</InputLabel>
+                <Select
+                    labelId="demo-mutiple-name-label"
+                    id="demo-mutiple-name"
+                    value={ingredient}
+                    onChange={handleChange}
+                    input={<Input />}
+                    MenuProps={MenuProps}
+                >
+                {names2.map((name) => (
+                   <MenuItem key={name} value={name} >
+                        {name}
+                   </MenuItem>
+                ))}
+                </Select>
+            </FormControl>
+          )
+        }
+        else{
+          return(
+            <Typography>
+                No Custom Ingredients Saved Yet
+            </Typography>
+          )
+        } 
+}
 
   return (
     <Container className={classes.root}>
-      <Paper elevation={3} gutterBottom className={classes.content}>
+      <Paper elevation={3} className={classes.content}>
+        <Avatar className={classes.avatar}>
+          <MenuBookIcon />
+        </Avatar>
         <Typography className={classes.title} >
             Create Meal 
         </Typography>
-        <div className={classes.form}>
+        <div>
         <form className={classes.form}>
         <TextField id="standard-basic" label="Title" name="title" className={classes.center} onChange={handleTitleChange}/>
         </form>
-          <Typography>
+        <div className={classes.center}>
+          <Typography className={classes.center} component="h3" variant="h5">
             Add Ingredients to Meal
           </Typography>
+        </div>
            <form className={classes.form}> 
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
               <FormControl className={classes.formControl}>
-                <InputLabel shrink htmlFor="select-multiple-native">
-                  Select Ingredient
-                </InputLabel>
+                <InputLabel id="demo-mutiple-name-label">Select Ingredient</InputLabel>
                 <Select
-                  multiple
-                  native
+                  labelId="demo-mutiple-name-label"
+                  id="demo-mutiple-name"
                   value={ingredient}
-                  onChange={handleFoodSelector}
-                  inputProps={{
-                    id: 'select-multiple-native',
-                  }}
+                  onChange={handleChange}
+                  input={<Input />}
+                  MenuProps={MenuProps}
                 >
                   {names.map((name) => (
-                    <option key={name} value={name}>
+                    <MenuItem key={name} value={name} >
                       {name}
-                    </option>
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
+              <CustomSelector />
               </Grid>
               <Grid item xs={12} sm={6}>
               <TextField id="standard-basic" label="Weight In Grams" name="amount" type="number" onChange={handleAmountSelection}>
@@ -342,7 +311,6 @@ function handleDataObject(event) {
             </Button>
           </form>
         </div>
-      {/* <RenderMeal /> */}
       </Paper>
     </Container>
   );         

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,17 +21,47 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
+  margin: {
+    margin: "5px"
+  }
 }));
 
-function Banner() {
-  const classes = useStyles();
+
+function Banner () {
+ const classes = useStyles();
+ const [name, setName] = useState([]);
+
+ useEffect(() => {
+   loadName()
+ }, [])
+
+ function loadName () {
+   axios.get('/api/user').then(response => {
+     console.log("look at this")
+     console.log(response.data)
+     setName(response.data.user.name)
+   })
+ }
   
-  return (
+  function logout(event) {
+    event.preventDefault()
+    console.log('logging out')
+    axios.post('/api/user/logout').then(response => {
+      console.log(response.data)
+      if (response.status === 200) {
+        window.location.href="/login"
+      }
+    }).catch(error => {
+      console.log('Logout error')
+    })
+  }
+  
+    return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title} link="/dashboard">
-              <Link href="/dashboard" color="inherit" >
+          <Typography variant="h6" className={classes.title} link="/viewMeals">
+              <Link href="/viewMeals" color="inherit" >
                 Daily Diet Directory
               </Link>
           </Typography>
@@ -40,12 +71,16 @@ function Banner() {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 color="inherit"
+                onClick={logout}
                 href="/login"
               >
                 <Typography>
+                {name}
+                </Typography>
+                <AccountCircle className={classes.margin}/>
+                <Typography>
                 Log Out 
                 </Typography>
-                <AccountCircle />
               </IconButton>
             </div>
         </Toolbar>
@@ -53,5 +88,6 @@ function Banner() {
     </div>
   );
 }
+
 export default Banner;
 
